@@ -7,6 +7,14 @@ ULDRUDURUDULLUDUDURLDLLRRULRRULRUDLULLLDRULLDURUULDDURDUUDLRDRUDUDDLDRDLUULRRDLR
 DURLRRRDRULDLULUDULUURURRLULUDLURURDDURULLRRUUDLRURLDLRUDULDLLRRULLLLRRLRUULDLDLLRDUDLLRLULRLLUUULULRDLDLRRURLUDDRRLUUDDRRUDDRRURLRRULLDDULLLURRULUDLRRRURRULRLLLRULLRRURDRLURULLDULRLLLULLRLRLLLDRRRRDDDDDDULUUDUDULRURDRUDRLUULURDURLURRDRRRRDRRLLLLUDLRRDURURLLULUDDLRLRLRRUURLLURLDUULLRRDURRULRULURLLLRLUURRULLLURDDDRURDUDDULLRULUUUDDRURUUDUURURRDRURDUDRLLRRULURUDLDURLDLRRRRLLUURRLULDDDUUUURUULDLDRLDUDULDRRULDRDULURRUURDU
 `
 
+// const input =
+// `
+// ULL
+// RRDDD
+// LURDL
+// UUUUD
+// `
+
 class keypad {
   constructor() {
     this.pos = {x:1,y:1}
@@ -32,7 +40,7 @@ class keypad {
   num() { return this.pos.y * 3 + this.pos.x + 1 }
 }
 
-k = new keypad()
+const k = new keypad()
 
 for (const line of input.split('\n')) {
   if (!line) continue
@@ -40,4 +48,58 @@ for (const line of input.split('\n')) {
     k.move(c)
   }
   console.log(k.num())
+}
+
+class diamondKeypad {
+  constructor() {
+    this.pos = {x:-2,y:0}
+  }
+
+  move(dir) {
+    const newPos = {
+      x: this.pos.x,
+      y: this.pos.y,
+    }
+
+    switch (dir) {
+      case 'U':
+        newPos.y = newPos.y+1
+        break
+      case 'L':
+        newPos.x = newPos.x-1
+        break
+      case 'D':
+        newPos.y = newPos.y-1
+        break
+      case 'R':
+        newPos.x = newPos.x+1
+        break
+    }
+
+    if (Math.abs(newPos.x) + Math.abs(newPos.y) <= 2) {
+      this.pos = newPos
+    }
+  }
+
+  num() {
+    const keypad = {
+      '2':                       {'0': '1'},
+      '1':            {'-1': '2', '0': '3', '1': '4'},
+      '0': {'-2': '5', '-1': '6', '0': '7', '2': '8', '3': '9'},
+      '-1':           {'-1': 'A', '0': 'B', '1': 'C'},
+      '-2':                      {'0': 'D'},
+    }
+
+    return keypad[this.pos.y][this.pos.x]
+  }
+}
+
+const k2 = new diamondKeypad()
+console.log('diamond keypad')
+for (const line of input.split('\n')) {
+  if (!line) continue
+  for (const c of line) {
+    k2.move(c)
+  }
+  console.log(k2.num())
 }
